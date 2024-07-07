@@ -35,7 +35,6 @@ export default function Home() {
     if (boxes[index] === 0) {
       setLost(true)
     }
-    console.log(index)
   }
 
 
