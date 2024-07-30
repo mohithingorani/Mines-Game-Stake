@@ -25,9 +25,10 @@ export default function Home() {
       } while (arr[index] === 0); // Ensure not placing a mine where one already exists
       arr[index] = 0; // Place mine
     }
-
+    setLost(false);
     setBoxes(arr);
     setShow([]);
+
     console.log("Setted " + mines + " mines");
   };
 
@@ -44,8 +45,9 @@ export default function Home() {
       <div className="w-full bg-[#213743] h-full grid grid-cols-5">
         <div className="col-span-2">
           <div className="px-4 py-4 flex flex-col  w-full max-w-md text-gray-300 gap-2">
-            <div >Mines</div>
+            <div>Mines</div>
             <input
+              max="24"
               type="number"
               value={mines}
               onChange={(e) => setMines(parseInt(e.target.value))}
