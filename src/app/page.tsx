@@ -42,50 +42,49 @@ export default function Home() {
   };
 
   return (
-    //Full Page
-    <div className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2C38]">
-      <div className=" grid grid-cols-4">
-        <div className="col-span-1  bg-[#213743]">
-          <div className="px-4 py-4 flex flex-col w-full max-w-md text-gray-300 gap-2">
+    <div className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2C38] px-4">
+      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="md:col-span-1 bg-[#213743] p-4 rounded-lg">
+          <div className="flex flex-col text-gray-300 gap-2">
             <div>Mines</div>
             <input
               type="number"
               max="24"
               value={mines}
               onChange={(e) => setMines(Math.min(parseInt(e.target.value), 24))}
-              className="bg-[#0F212E] border w-full border-gray-500 text-gray-300 px-3 py-1.5"
+              className="bg-[#0F212E] border w-full border-gray-500 text-gray-300 px-3 py-1.5 rounded"
             />
             <button
-              className="bg-green-400 text-[#213743] w-full hover:bg-green-500"
+              className="bg-green-400 text-[#213743] w-full hover:bg-green-500 rounded py-2"
               onClick={startProgram}
             >
               Bet
             </button>
             {mines > 24 && (
-              <div className="text-red-500">Mines cannot exceed 24</div>
+              <div className="text-red-500 mt-2">Mines cannot exceed 24</div>
             )}
           </div>
 
           {lost && (
-            <div className="flex flex-col justify-center items-center">
-              <div className="text-white text-4xl">You lost!</div>
+            <div className="flex flex-col justify-center items-center mt-4">
+              <div className="text-white text-2xl md:text-4xl">You lost!</div>
               <button
                 onClick={() => {
                   setRestart(!restart);
                   setLost(false);
                 }}
                 type="button"
-                className="w-32 mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center"
+                className="w-full md:w-32 mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center"
               >
                 Retry
               </button>
             </div>
           )}
         </div>
-        <div className="col-span-3 bg-[#0F212E] grid px-32 py-8 rounded-md">
-          <div className="grid grid-cols-5 ">
+        <div className="md:col-span-3 bg-[#0F212E] grid rounded-md">
+          <div className="grid grid-cols-5 gap-1 p-4 md:p-8">
             {boxes.map((value, index) => (
-              <div key={index} className="p-2">
+              <div key={index} className="flex justify-center items-center p-2">
                 <Box
                   onClick={() => {
                     if (!lost) handleClick(index);
