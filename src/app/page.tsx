@@ -43,15 +43,16 @@ export default function Home() {
     <div className="h-screen w-full flex flex-col justify-center items-center px-4 py-4">
       <div className="w-full bg-[#213743] h-full grid grid-cols-5">
         <div className="col-span-2">
-          <div className="px-4 py-4 flex flex-col items-start text-gray-300 gap-2">
-            <div>Mines</div>
+          <div className="px-4 py-4 flex flex-col  w-full max-w-md text-gray-300 gap-2">
+            <div >Mines</div>
             <input
               type="number"
+              value={mines}
               onChange={(e) => setMines(parseInt(e.target.value))}
-              className="bg-[#0F212E] border w-full border-gray-500 text-gray-300"
+              className="bg-[#0F212E] border w-full border-gray-500 text-gray-300 px-3 py-1.5"
             />
             <button
-              className="bg-green-400 text-[#213743] max-w-lg w-full"
+              className="bg-green-400 text-[#213743] s w-full"
               onClick={startProgram}
             >
               Bet
@@ -59,7 +60,7 @@ export default function Home() {
             {JSON.stringify(mines)}
           </div>
           {lost ? (
-            <div className="flex flex-col justify-center h-full items-center">
+            <div className="flex flex-col justify-center items-center">
               <div className="text-white text-8xl">You lost!</div>
               <button
                 onClick={() => {
