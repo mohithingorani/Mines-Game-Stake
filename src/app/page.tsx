@@ -84,7 +84,7 @@ export default function Home() {
         <div className="md:col-span-3 bg-[#0F212E] grid rounded-md">
           <div className="grid grid-cols-5 gap-1 p-4 md:p-8">
             {boxes.map((value, index) => (
-              <div key={index} className="flex justify-center items-center p-2">
+              <div key={index} className="flex justify-center items-center md:p-2">
                 <Box
                   onClick={() => {
                     if (!lost) handleClick(index);
