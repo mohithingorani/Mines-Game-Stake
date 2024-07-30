@@ -9,85 +9,91 @@ export default function Home() {
   const [restart, setRestart] = useState(false);
   const [show, setShow] = useState<number[]>([]);
   const [mines, setMines] = useState<number>(1);
+
   useEffect(() => {
     startProgram();
   }, [restart]);
 
   const startProgram = () => {
-    const gridSize = 25; // Assuming a 5x5 grid
-    let arr = Array(gridSize).fill(1); // Initialize all cells with 1 (no mine)
+    if (mines <= 24) {
+      const gridSize = 25; // Assuming a 5x5 grid
+      let arr = Array(gridSize).fill(1); // Initialize all cells with 1 (no mine)
 
-    // Randomly place mines
-    for (let i = 0; i < mines; i++) {
-      let index;
-      do {
-        index = Math.floor(Math.random() * gridSize);
-      } while (arr[index] === 0); // Ensure not placing a mine where one already exists
-      arr[index] = 0; // Place mine
+      // Randomly place mines
+      for (let i = 0; i < mines; i++) {
+        let index;
+        do {
+          index = Math.floor(Math.random() * gridSize);
+        } while (arr[index] === 0); // Ensure not placing a mine where one already exists
+        arr[index] = 0; // Place mine
+      }
+
+      setLost(false);
+      setBoxes(arr);
+      setShow([]);
     }
-    setLost(false);
-    setBoxes(arr);
-    setShow([]);
-
-    console.log("Setted " + mines + " mines");
   };
 
-  function handlClick(index: number) {
-    console.log(boxes);
-    setShow((show) => [...show, index]);
+  const handleClick = (index: number) => {
+    setShow((prevShow) => [...prevShow, index]);
     if (boxes[index] === 0) {
       setLost(true);
     }
-  }
+  };
 
   return (
-    <div className="h-screen w-full flex flex-col justify-center items-center px-4 py-4">
-      <div className="w-full bg-[#213743] h-full grid grid-cols-5">
-        <div className="col-span-2">
-          <div className="px-4 py-4 flex flex-col  w-full max-w-md text-gray-300 gap-2">
+    //Full Page
+    <div className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2C38]">
+      <div className=" grid grid-cols-4">
+        <div className="col-span-1  bg-[#213743]">
+          <div className="px-4 py-4 flex flex-col w-full max-w-md text-gray-300 gap-2">
             <div>Mines</div>
             <input
-              max="24"
               type="number"
+              max="24"
               value={mines}
-              onChange={(e) => setMines(parseInt(e.target.value))}
+              onChange={(e) => setMines(Math.min(parseInt(e.target.value), 24))}
               className="bg-[#0F212E] border w-full border-gray-500 text-gray-300 px-3 py-1.5"
             />
             <button
-              className="bg-green-400 text-[#213743] s w-full"
+              className="bg-green-400 text-[#213743] w-full hover:bg-green-500"
               onClick={startProgram}
             >
               Bet
             </button>
-            {JSON.stringify(mines)}
+            {mines > 24 && (
+              <div className="text-red-500">Mines cannot exceed 24</div>
+            )}
           </div>
-          {lost ? (
+
+          {lost && (
             <div className="flex flex-col justify-center items-center">
-              <div className="text-white text-8xl">You lost!</div>
+              <div className="text-white text-4xl">You lost!</div>
               <button
                 onClick={() => {
                   setRestart(!restart);
                   setLost(false);
                 }}
                 type="button"
-                className="w-32 mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none  font-medium rounded-full text-sm px-5 py-2.5 text-center"
+                className="w-32 mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center"
               >
                 Retry
               </button>
             </div>
-          ) : null}
+          )}
         </div>
-        <div className="col-span-3 bg-[#0F212E] grid px-8 py-4">
-          <div className="grid grid-cols-5 gap-4 px-12">
+        <div className="col-span-3 bg-[#0F212E] grid px-32 py-8 rounded-md">
+          <div className="grid grid-cols-5 ">
             {boxes.map((value, index) => (
-              <Box
-                key={index}
-                onClick={() => {
-                  lost ? null : handlClick(index);
-                }}
-                state={value ? "showGreen" : "showRed"}
-                show={show.includes(index) ? true : false}
-              />
+              <div key={index} className="p-2">
+                <Box
+                  onClick={() => {
+                    if (!lost) handleClick(index);
+                  }}
+                  state={value ? "showGreen" : "showRed"}
+                  show={show.includes(index)}
+                />
+              </div>
             ))}
           </div>
         </div>

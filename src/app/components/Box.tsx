@@ -1,42 +1,36 @@
 // src/components/Box.jsx
 import Image from "next/image";
-
-
+import { useState } from "react";
 
 interface StateProps {
-    state: "hideGrey" | "showGreen" | "showRed";
+  state: "hideGrey" | "showGreen" | "showRed";
 }
 
-export function Box({ onClick, state, show }: {onClick : React.MouseEventHandler<HTMLImageElement>, state : string, show:boolean}) {
-    if(!show){
-        return (
-            <div className="flex justify-center items-center">
-                <Image src="/element1.svg" alt="box" width={120} height={120} onClick={onClick} className="select-none" />
-            </div>
-        );
-    }
+interface BoxProps extends StateProps {
+  onClick: React.MouseEventHandler<HTMLImageElement>;
+  show: boolean;
+}
 
-    if (state === "hideGrey") {
-        return (
-            <div className="flex justify-center items-center">
-                <Image src="/element1.svg" alt="box" width={120} height={120} onClick={onClick} className="select-none" />
-            </div>
-        );
-    }
-    if (state === "showGreen") {
-        return (
-            <div className="flex justify-center items-center">
-                <Image src="/element2.svg" alt="box" width={120} height={120} onClick={onClick} className=" select-none"/>
-            </div>
-        );
-    }
-    if (state === "showRed") {
-        return (
-            <div className="flex justify-center items-center">
-                <Image src="/element3.svg" alt="box" width={120} height={120} onClick={onClick} />
-            </div>
-        );
-    }
+export function Box({ onClick, state, show }: BoxProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const isUnselected = !show;
 
-    return null;
+  const srcMap: Record<"showGreen" | "showRed" | "hideGrey", string> = {
+    hideGrey: isHovered ? "/element4.svg" : "/element1.svg",
+    showGreen: "/element2.svg",
+    showRed: "/element3.svg",
+  };
+
+  return (
+    <Image
+      src={isUnselected ? srcMap.hideGrey : srcMap[state as "showGreen" | "showRed"]}
+      alt="box"
+      width={120}
+      height={120}
+      onClick={onClick}
+      className={`select-none ${isUnselected ? "box-hover" : ""}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    />
+  );
 }
